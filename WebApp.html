@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDN-based Underwater Pipeline Monitoring</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>SDN-based Underwater Pipeline Monitoring</h1>
+    <p>Average Latency: {{ avg_latency }} ms</p>
+    <canvas id="latencyChart" width="400" height="200"></canvas>
+    
+    <script>
+        fetch('/data').then(response => response.json()).then(data => {
+                const labels = data.map(d => d.time);
+                const latencies = data.map(d => d.latency);
+                
+                const ctx = document.getElementById('latencyChart').getContext('2d');
+                const latencyChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Latency over Time',
+                            data: latencies,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Time (s)'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Latency (ms)'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
